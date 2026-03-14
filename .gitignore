@@ -1,0 +1,10 @@
+.vscode
+
+build
+**/build/
+
+**/*.exe
+**/*.out
+**/*.app
+**/main
+**/*.pdf
