@@ -2,8 +2,9 @@
 #include <stdexcept>
 using namespace std;
 
+
 template <typename eleType>
-class stack {
+class Stack {
   private:
     eleType* data;
     int Size;
@@ -22,8 +23,8 @@ class stack {
     }
 
   public:
-    stack() : data(new eleType[10]), Size(0), capacity(10) {}
-    ~stack() {
+    Stack() : data(new eleType[10]), Size(0), capacity(10) {}
+    ~Stack() {
         delete[] data;
     }
     void push(eleType ele) {
@@ -99,7 +100,7 @@ class stack_ {
 };
 
 int main() {
-    stack<int> st;
+    Stack<int> st;
     st.push(4);
     st.push(7);
     st.push(13);

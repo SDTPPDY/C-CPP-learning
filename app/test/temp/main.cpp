@@ -1,47 +1,73 @@
 #include <iostream>
 using namespace std;
 
-class Date {
-  private:
-    int year;
-    int month;
-    int day;
+int gcd(int a, int b) {
+    if (b == 0)
+        return a;
+    return gcd(b, a % b);
+}
+
+class Fraction {
+    int under;
+    int above;
+
+    double value() const {
+        return static_cast<double>(above) / under;
+    }
 
   public:
-    Date(int m, int d, int y) {
-        if (m < 1 || m > 12) {
-            m = 1;
+    Fraction(int a = 1, int u = 1) : under(u), above(a) {}
+    Fraction(double val) {
+        under = 1000;
+        above = static_cast<int>(val * under);
+        int g = gcd(under, above);
+        under /= g;
+        above /= g;
+    }
+
+    Fraction operator+(const Fraction& other) const {
+        int new_under = under * other.under;
+        int new_above = above * other.under + other.above * under;
+
+        int g = gcd(new_under, new_above);
+        new_under /= g;
+        new_above /= g;
+
+        return Fraction(new_above, new_under);
+    }
+
+    Fraction operator-(const Fraction& other) const {
+        int new_under = under * other.under;
+        int new_above = above * other.under - other.above * under;
+
+        int g = gcd(new_under, new_above);
+        new_under /= g;
+        new_above /= g;
+
+        return Fraction(new_above, new_under);
+    }
+
+    double to_double() const {
+        return value();
+    }
+
+    void Show() {
+        if (under < 0) {
+            under = -under;
+            above = -above;
         }
-        else {
-            month = m;
-            year = y;
-            day = d;
-        }
-    }
-    void setYear(int y) {
-        year = y;
-    }
-    void setMonth(int m) {
-        if (m < 1 || m > 12) {
-            month = 1;
-        }
-        else {
-            month = m;
-        }
-    }
-    void setDay(int d) {
-        day = d;
-    }
-    int getYear() {
-        return year;
-    }
-    int getMonth() {
-        return month;
-    }
-    int getDay() {
-        return day;
-    }
-    void displayDate() {
-        cout << month << "/" << day << "/" << year << endl;
+        cout << above << "/" << under;
     }
 };
+
+void fswap(Fraction& a, Fraction& b) {
+    Fraction temp = a;
+    a = b;
+    b = temp;
+}
+
+void ifLessSwap(Fraction& a, Fraction& b) {
+    if (a.to_double() < b.to_double()) {
+        fswap(a, b);
+    }
+}
